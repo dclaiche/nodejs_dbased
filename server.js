@@ -1,9 +1,12 @@
-import * as model from './model_model.mjs'
-import express from 'express'
-
+const playerModel = require('./playerModel.js');
+const express = require('express');
+const mysql = require('./dbcon.js')
 const app = express()
 const PORT = 3000
 app.use(express.json()).use(express.urlencoded({ extended: true })) 
+
+
+//todo: create models for each table that have the functions needed for each
 
 //create
 app.post("/foo", (req, res) => {
@@ -11,7 +14,7 @@ app.post("/foo", (req, res) => {
 })
 
 //read
-app.get("/foo", (req, res) => {
+app.get("/players", (req, res) => {
     
 })
 
