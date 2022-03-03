@@ -9,6 +9,7 @@ SELECT * FROM Games;
 SELECT * FROM Premium_Membership_Status;
 -- Get all messages data to populate table
 SELECT * FROM Messages;
+
 -- Get all players data who are premium status
 SELECT player_id, email, password, games, wins, losses FROM Players INNER JOIN Premium_Membership_Status ON premium_status = 1;
 -- Get all player data based on player_id input
@@ -21,13 +22,14 @@ INNER JOIN Player_Has_Games ON Player.player_id = Player_Has_Games.players_playe
 INNER JOIN Games ON Games.games_game_id = Player_has_Games.games_game_id
 WHERE player_id = :player_ID_input_in_browser_searchbox
 AND winner = player_id;
+
 -- Update player attributes based on player_id
 UPDATE Player SET player_id = :player_id, email = :email, password = :password, games = :games, wins = :wins, losses = :losses WHERE player_id = :player_ID_input_in_browser_updatebox;
 
 -- Query for add a new player functionality.
 -- colon : character being used to denote the variables 
 
-INSERT INTO `Players` (email, password, wins, losses)
+INSERT INTO `Players` (email, password, games, wins, losses)
 VALUES (:email_input, :password_hash_input, :games_input, :wins_input, :losses_input);
 
 -- Query for add a new Game functionality.

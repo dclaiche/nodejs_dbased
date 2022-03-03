@@ -1,40 +1,28 @@
-const PlayerModel = require('./playerModel.js');
-const express = require('express');
-var bodyParser = require('body-parser');
+// const PlayerModel = require('./playerModel.js');
 const mysql = require('./dbcon.js')
+const express = require('express');
 const app = express()
 const PORT = 3000
-
-app.use(bodyParser.urlencoded({extended:true}));
+app.set('port', PORT);
+app.set('mysql', mysql)
+app.use(express.json());
 
 //todo: create models for each table that have the functions needed for each
+app.use('/players', require('./modelControllers/playerModCon.js'));
+app.use('/games', require('./modelControllers/gameModCon.js'));
+app.use('/messages', require('./modelControllers/messageModCon.js'));
+app.use('/memberships', require('./modelControllers/membershipModCon.js'));
 
-//create
-app.post("/foo", (req, res) => {
+app.use(function(req,res){
+    res.status(404);
+    res.render('404');
+});
 
-})
-
-//read
-app.get("/players", (req, res) => {
-    PlayerModel.getPlayers()
-    .then(players => {
-        res.send(players)
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).send({error: "Request Failed"})
-    })
-})
-
-//update
-app.put("/foo/:id", (req, res) => {
-
-})
-
-//delete
-app.delete("/foo/:id", (req, res) => {
-
-})
+app.use(function(err, req, res, next){
+    console.error(err.stack);
+    res.status(500);
+    res.render('500');
+});
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
