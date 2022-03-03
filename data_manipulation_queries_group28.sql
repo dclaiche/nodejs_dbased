@@ -11,7 +11,7 @@
 -- SELECT * FROM Messages;
 
 -- Get all players data who are premium status
-SELECT player_id, email, password, games, wins, losses FROM Players INNER JOIN Premium_Membership_Status ON premium_status = 1;
+SELECT player_id, email, password, games, wins, losses FROM Players INNER JOIN Premium_Membership_Status ON premium_status = 1 AND membership_player_id = player_id;
 -- Get all player data based on player_id input
 SELECT player_id, email, password, games, wins, losses FROM Players WHERE player_id = :player_ID_input_in_browser_searchbox;
 -- Get win loss ratio of specific player
