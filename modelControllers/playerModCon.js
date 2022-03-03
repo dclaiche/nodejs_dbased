@@ -56,6 +56,19 @@ module.exports = function(){
         })
     }
 
+    //get premium players
+    const getPlayerGames = async (req,num, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT player_id, email, password, games, wins, losses FROM Players WHERE games = ${num}`
+            mysql.pool.query(sql, (error, elements) => {
+                if(error){
+                    return reject(error)
+                }
+                return resolve(elements)
+            })
+        })
+    }
+
     /*
     ----------Routes----------
     */
@@ -86,9 +99,22 @@ module.exports = function(){
         })
     })
 
+    //get players who have played x amount of games
+    router.get('/games/:num', (req, res) => {
+        const mysql = req.app.get('mysql');
+        getPlayerGames(req, req.params.num, mysql)
+            .then(playerGames => {
+                res.send(playerGames)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+
     //get all premium players
     router.get('/premiumplayers', (req, res) => {
-        console.log("asdfasdf")
         const mysql = req.app.get('mysql');
         getPremiumPlayers(req, mysql)
             .then(premiumPlayers => {

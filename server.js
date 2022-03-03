@@ -14,15 +14,8 @@ app.use('/messages', require('./modelControllers/messageModCon.js'));
 app.use('/memberships', require('./modelControllers/membershipModCon.js'));
 app.use('/playerhasgames', require('./modelControllers/hasGamesModCon.js'))
 
-app.use(function(req,res){
-    res.status(404);
-    res.render('404');
-});
-
-app.use(function(err, req, res, next){
-    console.error(err.stack);
-    res.status(500);
-    res.render('500');
+app.use((req,res) => {
+    res.status(404).send({error: "Not Found"});
 });
 
 app.listen(PORT, () => {
