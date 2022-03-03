@@ -69,6 +69,20 @@ module.exports = function(){
         })
     }
 
+    //get Games Won
+    const getGamesWon = async (req, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT player_id, game_id FROM Players INNER JOIN Player_Has_Games ON Players.player_id = Player_Has_Games.players_player_id INNER JOIN Games ON Games.game_id = Player_Has_Games.games_game_id WHERE winner = player_id;'
+            mysql.pool.query(sql, (error, elements) => {
+                if(error){
+                    return reject(error)
+                }
+                return resolve(elements)
+            })
+        })
+    }
+
+
     /*
     ----------Routes----------
     */
@@ -119,6 +133,19 @@ module.exports = function(){
         getPremiumPlayers(req, mysql)
             .then(premiumPlayers => {
                 res.send(premiumPlayers)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+    //get all winners and their games
+    router.get('/gameswon', (req, res) => {
+        const mysql = req.app.get('mysql');
+        getGamesWon(req, mysql)
+            .then(gamesWon => {
+                res.send(gamesWon)
             })
             .catch(error => {
                 console.log(error)

@@ -10,16 +10,17 @@
 -- -- Get all messages data to populate table
 -- SELECT * FROM Messages;
 
--- Get all players data who are premium status
-SELECT player_id, email, password, games, wins, losses FROM Players INNER JOIN Premium_Membership_Status ON premium_status = 1 AND membership_player_id = player_id;
+-- -- Get all players data who are premium status
+-- SELECT player_id, email, password, games, wins, losses FROM Players INNER JOIN Premium_Membership_Status ON premium_status = 1 AND membership_player_id = player_id;
+
 -- Get all player data based on player_id input
-SELECT player_id, email, password, games, wins, losses FROM Players WHERE player_id = :player_ID_input_in_browser_searchbox;
+SELECT player_id, email, password, games, wins, losses FROM Players WHERE games = :game;
 -- Get win loss ratio of specific player
 SELECT player_id, wins / losses AS winlossratio FROM Players WHERE player_id = :player_ID_input_in_browser_searchbox;
 -- Get player and game id where player is the winner
 SELECT player_id, game_id FROM Players
-INNER JOIN Player_Has_Games ON Player.player_id = Player_Has_Games.players_player_id
-INNER JOIN Games ON Games.games_game_id = Player_has_Games.games_game_id
+INNER JOIN Player_Has_Games ON Players.player_id = Player_Has_Games.players_player_id
+INNER JOIN Games ON Games.game_id = Player_Has_Games.games_game_id
 WHERE player_id = :player_ID_input_in_browser_searchbox
 AND winner = player_id;
 
