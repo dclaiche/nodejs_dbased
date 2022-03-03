@@ -12,6 +12,7 @@ app.use('/players', require('./modelControllers/playerModCon.js'));
 app.use('/games', require('./modelControllers/gameModCon.js'));
 app.use('/messages', require('./modelControllers/messageModCon.js'));
 app.use('/memberships', require('./modelControllers/membershipModCon.js'));
+app.use('/playerhasgames', require('./modelControllers/hasGamesModCon.js'))
 
 app.use(function(req,res){
     res.status(404);

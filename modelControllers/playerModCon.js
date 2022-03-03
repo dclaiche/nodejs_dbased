@@ -1,6 +1,7 @@
 module.exports = function(){
     const express = require('express');
     const router = express.Router();
+    const url = require('url');
 
     //get all Players
     const getPlayers = async (mysql) => {
