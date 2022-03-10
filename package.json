@@ -16,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/matthewgehring/nodejs_dbased/issues"
   },
-  "homepage": "https://github.com/matthewgehring/nodejs_dbased#readme",
   "dependencies": {
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
