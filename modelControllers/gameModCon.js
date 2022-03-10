@@ -116,6 +116,7 @@ module.exports = function(){
                 console.log(error)
                 res.status(500).send({error: "Request Failed"})
             })
+            
             .finally(()=> {
                 res.redirect('/games')
             })

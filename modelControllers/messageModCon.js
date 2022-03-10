@@ -15,7 +15,7 @@ module.exports = function(){
     }
 
     //add a game
-    const addGame = async (req, mysql) => {
+    const addMessage = async (req, mysql) => {
         return new Promise((resolve, reject) => {
             const sql = "INSERT INTO `Messages` (chat_message, timestamp, players_player_id, games_game_id) VALUES (?,?,?,?);"
             const values = [req.body.chat_message, req.body.timestamp, req.body.players_player_id, req.body.games_game_id];
