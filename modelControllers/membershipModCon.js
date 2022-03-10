@@ -27,6 +27,46 @@ module.exports = function(){
         })
     }
 
+    //get one Membership
+    const getOne = async (req, id, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM Premium_Membership_Status where membership_player_id = ${id}`
+            mysql.pool.query(sql, (error, elements) => {
+                if(error){
+                    return reject(error)
+                }
+                return resolve(elements)
+            })
+        })
+    }
+
+    //update one
+    const updateOne = async (req, id, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE Premium_Membership_Status SET membership_player_id = ?, premium_status = ?, next_payment = ? WHERE membership_player_id = ${id}`
+            const values = [id, req.body.premium_status, req.body.nex_payment];
+            mysql.pool.query(sql, values, (error, results, fields) => {
+                if (error){
+                    return reject(error)
+                }
+                return resolve(results)
+            })
+        })
+    }
+
+    //delete one
+    const deleteOne = async (req, id, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM Premium_Membership_Status WHERE membership_player_id = ${id}`
+            mysql.pool.query(sql, (error, results, fields) => {
+                if (error){
+                    return reject(error)
+                }
+                return resolve(results)
+            })
+        })
+    }
+
     /*
     ----------Routes----------
     */
@@ -50,6 +90,45 @@ module.exports = function(){
         addMembership(req, mysql)
             .then(membership => {
                 res.redirect('/memberships')
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+    //get one
+    router.get('/:id', (req, res) => {
+        const mysql = req.app.get('mysql');
+        getOne(req, req.params.id, mysql)
+            .then(one => {
+                res.send(one)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+    //update one
+    router.put('/:id', (req, res) => {
+        const mysql = req.app.get('mysql');
+        updateOne(req, req.params.id, mysql)
+            .then(one => {
+                res.send(one)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+    //delete one
+    router.delete('/:id', (req, res) => {
+        const mysql = req.app.get('mysql');
+        deleteOne(req, req.params.id, mysql)
+            .then(one => {
+                res.send(one)
             })
             .catch(error => {
                 console.log(error)
