@@ -1,7 +1,14 @@
 // const PlayerModel = require('./playerModel.js');
 const mysql = require('./dbcon.js')
 const express = require('express');
-const app = express()
+const app = express();
+const cors = require('cors');
+const corsConfig = {
+    origin: '*',
+    credentials:true,
+    optionSuccessStatus:200
+}
+app.use(cors(corsConfig))
 const PORT = 3000
 app.set('port', PORT);
 app.set('mysql', mysql)

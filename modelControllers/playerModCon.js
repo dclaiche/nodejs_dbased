@@ -29,19 +29,20 @@ module.exports = function(){
         })
     }
 
-    //add player has games
-    const addPlayerHasGames = async (req, mysql) => {
-        return new Promise((resolve, reject) => {
-            const sql = "INSERT INTO `Player_Has_Games` (players_player_id, games_game_id) VALUES (?,?)"
-            const values = [req.body.players_player_id, null];
-            mysql.pool.query(sql, values, (error, results, fields) => {
-                if (error){
-                    return reject(error)
-                }
-                return resolve(results)
-            })
-        })
-    }
+    //DO WE NEED THIS?
+    // //add player has games
+    // const addPlayerHasGames = async (req, mysql) => {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = "INSERT INTO `Player_Has_Games` (players_player_id, games_game_id) VALUES (?,?)"
+    //         const values = [req.body.players_player_id, null];
+    //         mysql.pool.query(sql, values, (error, results, fields) => {
+    //             if (error){
+    //                 return reject(error)
+    //             }
+    //             return resolve(results)
+    //         })
+    //     })
+    // }
 
     //get premium players
     const getPremiumPlayers = async (req, mysql) => {
@@ -82,7 +83,45 @@ module.exports = function(){
         })
     }
 
+    //get one player
+    const getOne = async (req, id, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM Players where player_id = ${id}`
+            mysql.pool.query(sql, (error, elements) => {
+                if(error){
+                    return reject(error)
+                }
+                return resolve(elements)
+            })
+        })
+    }
 
+    //update one
+    const updateOne = async (req, id, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE Players SET player_id = ?, email = ?, password = ?, games = ?, wins = ?, losses = ? WHERE player_id = ${id}`
+            const values = [id, req.body.email, req.body.password, req.body.games, req.body.wins, req.body.losses];
+            mysql.pool.query(sql, values, (error, results, fields) => {
+                if (error){
+                    return reject(error)
+                }
+                return resolve(results)
+            })
+        })
+    }
+
+    //delete one
+    const deleteOne = async (req, id, mysql) => {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM Players WHERE player_id = ${id}`
+            mysql.pool.query(sql, (error, results, fields) => {
+                if (error){
+                    return reject(error)
+                }
+                return resolve(results)
+            })
+        })
+    }
     /*
     ----------Routes----------
     */
@@ -152,6 +191,47 @@ module.exports = function(){
                 res.status(500).send({error: "Request Failed"})
             })
     })
+
+    //get one
+    router.get('/:id', (req, res) => {
+        const mysql = req.app.get('mysql');
+        getOne(req, req.params.id, mysql)
+            .then(one => {
+                res.send(one)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+    //update one
+    router.put('/:id', (req, res) => {
+        const mysql = req.app.get('mysql');
+        updateOne(req, req.params.id, mysql)
+            .then(one => {
+                res.send(one)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+    //delete one
+    router.delete('/:id', (req, res) => {
+        const mysql = req.app.get('mysql');
+        deleteOne(req, req.params.id, mysql)
+            .then(one => {
+                res.send(one)
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).send({error: "Request Failed"})
+            })
+    })
+
+
 
     return router;
 }();
