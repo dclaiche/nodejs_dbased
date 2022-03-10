@@ -17,7 +17,7 @@ module.exports = function(){
     const addMembership = async (req, mysql) => {
         return new Promise((resolve, reject) => {
             const sql = "INSERT INTO `Premium_Membership_Status` (players_player_id, premium_status, next_payment) VALUES (?,?,?)"
-            const values = [req.body.players_player_id, req.body.premium_status, req.body.nex_payment]
+            const values = [req.body.players_player_id, req.body.premium_status, req.body.next_payment]
             mysql.pool.query(sql, values, (error, results, fields) => {
                 if (error){
                     return reject(error)
@@ -44,7 +44,7 @@ module.exports = function(){
     const updateOne = async (req, id, mysql) => {
         return new Promise((resolve, reject) => {
             const sql = `UPDATE Premium_Membership_Status SET membership_player_id = ?, premium_status = ?, next_payment = ? WHERE membership_player_id = ${id}`
-            const values = [id, req.body.premium_status, req.body.nex_payment];
+            const values = [id, req.body.premium_status, req.body.next_payment];
             mysql.pool.query(sql, values, (error, results, fields) => {
                 if (error){
                     return reject(error)
@@ -85,7 +85,7 @@ module.exports = function(){
     })
 
     //add a membership
-    router.get('/', (req, res) => {
+    router.post('/', (req, res) => {
         const mysql = req.app.get('mysql');
         addMembership(req, mysql)
             .then(membership => {
