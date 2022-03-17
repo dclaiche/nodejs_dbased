@@ -1,7 +1,6 @@
 module.exports = function(){
     const express = require('express');
     const router = express.Router();
-    const url = require('url');
 
     //get all Players
     const getPlayers = async (mysql) => {
@@ -29,21 +28,6 @@ module.exports = function(){
         })
     }
 
-    //DO WE NEED THIS?
-    // //add player has games
-    // const addPlayerHasGames = async (req, mysql) => {
-    //     return new Promise((resolve, reject) => {
-    //         const sql = "INSERT INTO `Player_Has_Games` (players_player_id, games_game_id) VALUES (?,?)"
-    //         const values = [req.body.players_player_id, null];
-    //         mysql.pool.query(sql, values, (error, results, fields) => {
-    //             if (error){
-    //                 return reject(error)
-    //             }
-    //             return resolve(results)
-    //         })
-    //     })
-    // }
-
     //get premium players
     const getPremiumPlayers = async (req, mysql) => {
         return new Promise((resolve, reject) => {
@@ -57,7 +41,7 @@ module.exports = function(){
         })
     }
 
-    //get premium players
+    //get players based on amount of games
     const getPlayerGames = async (req,num, mysql) => {
         return new Promise((resolve, reject) => {
             const sql = `SELECT player_id, email, password, games, wins, losses FROM Players WHERE games = ${num}`

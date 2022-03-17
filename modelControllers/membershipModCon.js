@@ -14,6 +14,7 @@ module.exports = function(){
         })
     }
 
+    //add membership
     const addMembership = async (req, mysql) => {
         return new Promise((resolve, reject) => {
             const sql = "INSERT INTO `Premium_Membership_Status` (membership_player_id, premium_status, next_payment) VALUES (?,?,?)"
